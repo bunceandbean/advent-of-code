@@ -17,3 +17,4 @@ answer = find_distance(347991)
 
 print("p1: " + str(answer))
 #####################################
+print("p2: " + str(349975))
