@@ -9,7 +9,6 @@ for num in range(len(content)):
 def find_cycles(content):
     past_mem = []
     past_mem.append(content.copy())
-    cycles = 0
     while True:
         max_num = max(content)
         max_index = content.index(max_num)
@@ -19,11 +18,10 @@ def find_cycles(content):
             content[i % len(content)] += 1
             max_num -= 1
             i += 1
-        cycles += 1
         if content.copy() in past_mem:
             break
         past_mem.append(content.copy())
-    return [cycles, content]
+    return [len(past_mem), content]
 
 results = find_cycles(content)
 answer_one = results[0]
