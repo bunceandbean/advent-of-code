@@ -50,6 +50,7 @@ for i in range(len(branch_totals)-1):
         delta = (branch_totals[i] - branch_totals[i + 1])
 
 answer_one = curr
+#I would like to thank oeis.org for making my life easy for part 2...
 answer_two = "1458"
 print("p1: " + answer_one)
 print("p2: " + answer_two)
