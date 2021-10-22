@@ -36,10 +36,8 @@ def duet_assembly():
     pID = 0
     p1Vals = 0
     vars = [{"p":0},{"p":1}]
-    upper_bound = 10000000
-    i = 0
-    while dex[0] < len(content) and dex[1] < len(content) and i < upper_bound:
-        i += 1
+    swaps = False
+    while True:
         cmd = content[dex[pID]][:3]
         var = content[dex[pID]][4:5]
         ####Check Vals###############
@@ -76,7 +74,11 @@ def duet_assembly():
             vars[pID][var] = queue[pID].pop(0)
         else:
             pID = (pID + 1) % 2
+            if swaps:
+                break
+            swaps = True
             continue
+        swaps = False
         dex[pID] += 1
     return p1Vals
 
