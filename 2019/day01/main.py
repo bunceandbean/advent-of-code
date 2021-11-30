@@ -3,12 +3,11 @@ with open("input.txt") as f:
 
 def fuel(num):
     return num//3 - 2
+    
 def fuel2(num):
-    sum = 0
-    while fuel(num) > 0:
-        num = fuel(num)
-        sum += num
-    return sum
+    if fuel(num) > 0:
+        return fuel(num) + fuel2(fuel(num))
+    return 0
 
 answer_one = str(sum(list(map(fuel,content))))
 answer_two = str(sum(list(map(fuel2,content))))
