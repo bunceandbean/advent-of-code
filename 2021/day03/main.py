@@ -4,26 +4,22 @@ with open("input.txt") as f:
 binary = ""
 least = ""
 for i in range(len(content[0])):
-    bins = [x[i] for x in content]
-    if bins.count("1") > len(bins)//2:
-        binary += "1"
-        least += "0"
-    else:
-        binary += "0"
-        least += '1'
+    bins = [int(x[i]) for x in content]
+    check = sum(bins) > len(bins)//2
+    binary += str(int(check))
+    least += str(int(not check))
 
 oxygen = 0
 co2 = 0
-crit_o = content.copy()
-crit_c = content.copy()
+crit_o = crit_c = content.copy()
 for i in range(len(content[0])):
     bins_o = [x[i] for x in crit_o]
     bins_c = [x[i] for x in crit_c]
-    if bins_o.count("1") >= bins_o.count("0"):
+    if sum(map(int,bins_o)) >= len(bins_o)/2:
         crit_o = [x for x in crit_o if x[i] == "1"]
     else:
         crit_o = [x for x in crit_o if x[i] == "0"]
-    if bins_c.count("1") < bins_c.count("0"):
+    if sum(map(int,bins_c)) < len(bins_c)/2:
         crit_c = [x for x in crit_c if x[i] == "1"]
     else:
         crit_c = [x for x in crit_c if x[i] == "0"]
