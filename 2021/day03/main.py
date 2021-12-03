@@ -5,9 +5,8 @@ binary = ""
 least = ""
 for i in range(len(content[0])):
     bins = [int(x[i]) for x in content]
-    check = sum(bins) > len(bins)//2
-    binary += str(int(check))
-    least += str(int(not check))
+    binary += str(int(sum(bins) > len(bins)//2))
+    least += str(int(not (sum(bins) > len(bins)//2)))
 
 oxygen = 0
 co2 = 0
