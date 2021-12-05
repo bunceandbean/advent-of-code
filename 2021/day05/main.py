@@ -1,12 +1,18 @@
+from matplotlib.pyplot import plot as plots
+from matplotlib.pyplot import show
+from matplotlib.pyplot import title
 with open("input.txt") as f:
     content = f.read().split("\n")[:~0]
 
-def lines(zeroes):
+def lines(zeroes,plot):
     pts = set()
     cross = set()
+    title("Hydrothermal Vents")
     for line in content:
         one = eval("(" + line[:line.index(" ")] + ")")
         two = eval("(" + line[line.index(">")+2:] + ")")
+        if plot:
+            plots([one[0],two[0]],[one[1],two[1]])
         delta = (two[0]-one[0], two[1]-one[1])
         if 0 in delta or zeroes:
             if 0 in delta:
@@ -26,11 +32,11 @@ def lines(zeroes):
                     pts.add(pt)
                     if leng == len(pts):
                         cross.add(pt)
-
-
+    if plot:
+        show()
     return len(cross)
 
-answer_one = str(lines(False))
-answer_two = str(lines(True))
+answer_one = str(lines(False,False))
+answer_two = str(lines(True,False))
 print("p1: " + answer_one)
 print("p2: " + answer_two)
