@@ -6,8 +6,8 @@ with open("input.txt") as f:
 def fuel(expense):
     med = int(median(content))
     mid = int(mean(content))
-    return sum([sum({*range(abs(x-mid)+1)}) for x in content]) \
-    if expense else sum([abs(x-med) for x in content])
+    return sum(map(lambda x:sum({*range(abs(x-mid)+1)}),content)) \
+    if expense else sum(map(lambda x:abs(x-med),content))
 
 answer_one = str(fuel(False))
 answer_two = str(fuel(True))
