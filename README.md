@@ -7,7 +7,7 @@
  [[2018]](2018) - 06 :star:  
  [[2017]](2017) - 50 :star: - *Complete!*  
  [[2016]](2016) - 20 :star:  
- [[2015]](2015) - 48 :star:  
+ [[2015]](2015) - 50 :star: - *Complete!*  
 
-#### Total Stars - 178 :star:
+#### Total Stars - 180 :star:
 
