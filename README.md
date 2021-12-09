@@ -1,7 +1,7 @@
 # advent-of-code
  Repository of all my Advent of Code solutions.
 ### Year Progress
- [[2021]](2021) - 16 :star:  
+ [[2021]](2021) - 18 :star:  
  [[2020]](2020) - 32 :star:  
  [[2019]](2019) - 04 :star:  
  [[2018]](2018) - 06 :star:  
@@ -9,5 +9,5 @@
  [[2016]](2016) - 20 :star:  
  [[2015]](2015) - 42 :star:  
 
-#### Total Stars - 168 :star:
+#### Total Stars - 170 :star:
 
