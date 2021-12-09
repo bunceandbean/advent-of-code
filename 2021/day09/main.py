@@ -15,8 +15,7 @@ def find_neighbors(line,chr):
     return neighbors
 
 
-lows = []
-
+basin_lens = []
 def basin():
     num = 0
     for line in range(len(content)):
@@ -24,7 +23,7 @@ def basin():
             neighbors = find_neighbors(line,chr)
             if content[line][chr] < min([x[0] for x in neighbors]):
                     num += content[line][chr] + 1
-                    lows.append((line,chr))
+                    basin_lens.append(len(flood(line,chr)))
     return num
 
 def flood(line,chr):
@@ -35,6 +34,6 @@ def flood(line,chr):
     return fill
 
 answer_one = basin()
-answer_two = math.prod(sorted([len(flood(tup[0],tup[1])) for tup in lows])[~2:])
+answer_two = math.prod(sorted(basin_lens)[~2:])
 print("p1:",answer_one)
 print("p2:",answer_two)
