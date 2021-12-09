@@ -1,17 +1,18 @@
 import math
 with open("input.txt") as f:
     content = [[int(m) for m in x] for x in f.read().split("\n")][:~0]
+    next_to = [(0,-1),(0,1),(-1,0),(1,0)]
+
+points = set()
+for i in range(len(content)):
+    for j in range(len(content[0])):
+        points.add((i,j))
 
 def find_neighbors(line,chr):
     neighbors = []
-    if chr != 0:
-        neighbors.append([content[line][chr-1],(line,chr-1)])
-    if chr != len(content[line])-1:
-        neighbors.append([content[line][chr+1],(line,chr+1)])
-    if line != 0:
-        neighbors.append([content[line-1][chr],(line-1,chr)])
-    if line != len(content)-1:
-        neighbors.append([content[line+1][chr],(line+1,chr)])
+    for tup in next_to:
+        if (line+tup[0],chr+tup[1]) in points:
+            neighbors.append([content[line+tup[0]][chr+tup[1]],(line+tup[0],chr+tup[1])])
     return neighbors
 
 
