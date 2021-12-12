@@ -1,60 +1,97 @@
-import random
-#Open file and compress lines into an array
+from copy import deepcopy
 with open("input.txt") as f:
-    content = f.readlines()
-content = [x.strip() for x in content]
+    content = [[True if m=="#" else False for m in list(x)] \
+    for x in f.read().split("\n")[:~0]]
+    next_to = set()
+    for i in range(-1,2,1):
+        for j in range(-1,2,1):
+            for k in range(-1,2,1):
+                if (i,j,k) != (0,0,0):
+                    next_to.add((i,j,k))
+    next_hyper = set()
+    for i in range(-1,2,1):
+        for j in range(-1,2,1):
+            for k in range(-1,2,1):
+                for w in range(-1,2,1):
+                    if (i,j,k,w) != (0,0,0,0):
+                        next_hyper.add((i,j,k,w))
 
-coords = []
+def find_neighbors(x,y,z,points):
+    neighbors = [(z+pair[2],y+pair[1],x+pair[0]) for pair in next_to \
+    if (z+pair[2],y+pair[1],x+pair[0]) in points]
+    return neighbors
 
-def variations(coord,inactive_check):
-    vars = []
-    list = [-1,0,1]
-    total = 0
-    to_26 = []
-    if inactive_check:
-        while(len(to_26) < 26):
-            temp = [coord[0],coord[1],coord[2]]
-            temp[0] = coord[0] + random.choice(list)
-            temp[1] = coord[1] + random.choice(list)
-            temp[2] = coord[2] + random.choice(list)
-            if temp not in vars and temp != coord and temp not in coords:
-                vars.append(temp)
-            elif temp not in to_26 and temp != coord:
-                to_26.append(temp)
-    else:
-        while(len(vars) < 26):
-            temp = [coord[0],coord[1],coord[2]]
-            temp[0] = coord[0] + random.choice(list)
-            temp[1] = coord[1] + random.choice(list)
-            temp[2] = coord[2] + random.choice(list)
-            if temp not in vars and temp != coord:
-                vars.append(temp)
-    return vars
+def find_hypers(x,y,z,w):
+    neighbors = [(w+pair[3],z+pair[2],y+pair[1],x+pair[0]) for pair in next_hyper]
+    return neighbors
 
-y_count = 0
-for y in content:
-    x_count = 0
-    for x in y:
-        if x == "#":
-            coords.append([x_count,y_count,0])
-        x_count += 1
-    y_count += 1
+def cycle(start,times):
+    points = set()
+    flop = set()
+    start = [start.copy()]
+    on = 0
+    for i in range(times):
+        for layer in range(len(start)):
+            for row in start[layer]:
+                row.insert(0,False)
+                row.append(False)
+            start[layer].insert(0,[False for x in start[0][0]])
+            start[layer].append([False for x in start[0][0]])
+        start.insert(0,[[False for m in range(len(start[0][0]))] for x in range(len(start[0]))])
+        start.append([[False for m in range(len(start[0][0]))] for x in range(len(start[0]))])
+        for z in range(len(start)):
+            for y in range(len(start[z])):
+                for x in range(len(start[z][y])):
+                    points.add((z,y,x))
+        for z in range(len(start)):
+            for y in range(len(start[z])):
+                for x in range(len(start[z][y])):
+                    neighbors = sum([start[x[0]][x[1]][x[2]] for x in find_neighbors(x,y,z,points)])
+                    if start[z][y][x] and not (neighbors == 2 or neighbors == 3):
+                        flop.add((z,y,x))
+                    elif not start[z][y][x] and neighbors == 3:
+                        flop.add((z,y,x))
+        for point in flop:
+            start[point[0]][point[1]][point[2]] = not start[point[0]][point[1]][point[2]]
+        flop = set()
+    for z in range(len(start)):
+        for y in range(len(start[z])):
+            for x in range(len(start[z][y])):
+                if start[z][y][x]:
+                    on += 1
+    return on
+
+def hyper_cycle(start,times):
+    cubes = {}
+    for y in range(len(start)):
+        for x in range(len(start[0])):
+            cubes[(0,0,y,x)] = start[y][x]
+    for i in range(times):
+        to_add = set()
+        flop = set()
+        for cube in cubes:
+            for point in find_hypers(cube[3],cube[2],cube[1],cube[0]):
+                if point not in cubes:
+                    to_add.add(point)
+        for point in to_add:
+            cubes[point] = False
+        for cube in cubes:
+            sums = 0
+            for point in find_hypers(cube[3],cube[2],cube[1],cube[0]):
+                try:
+                    sums += cubes[point]
+                except:
+                    pass
+            if cubes[cube] and not (sums == 2 or sums == 3):
+                flop.add(cube)
+            elif not cubes[cube] and sums == 3:
+                flop.add(cube)
+        for point in flop:
+            cubes[point] = not cubes[point]
+    return sum(cubes.values())
 
 
-for i in range(6):
-    new_round = []
-    #active check
-    for coord in coords:
-        active_list = 0
-        for c in coords:
-            if c is not coord and abs(c[0] - coord[0]) <= 1 and abs(c[1] - coord[1]) <= 1 and abs(c[2] - coord[2]) <= 1:
-                active_list += 1
-        if active_list == 3 or active_list == 2:
-            new_round.append(coord)
-
-    #inactive check
-
-    coords = list(new_round)
-    print(coords)
-
-print(len(coords))
+answer_one = cycle(deepcopy(content),6)
+answer_two = hyper_cycle(deepcopy(content),6)
+print("p1:",answer_one)
+print("p2:",answer_two)
