@@ -9,6 +9,7 @@ for line in content:
     paths[two].append(one)
 
 def pathfinder(pos,past,mult,cave):
+    poss = 0
     if pos == "end":
         return 1
     if pos == "start" and len(past) != 0:
@@ -20,10 +21,8 @@ def pathfinder(pos,past,mult,cave):
             cave = pos
         else:
             return 0
-    past = past | {pos}
-    poss = 0
     for route in paths[pos]:
-        poss += pathfinder(route,past,mult,cave)
+        poss += pathfinder(route,past | {pos},mult,cave)
     return poss
 
 
