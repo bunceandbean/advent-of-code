@@ -9,14 +9,9 @@ for path in content:
     city1 = path[:path.index("to")-1][0:2]
     city2 = path[path.index("to")+3:path.index("=")-1][0:2]
     dist = int(path[path.index("=")+1:])
-    if city1 not in cities:
-        cities.append(city1)
-        opts[city1] = []
-    if city2 not in cities:
-        cities.append(city2)
-        opts[city2] = []
-    opts[city1].append([city2,dist])
-    opts[city2].append([city1,dist])
+    dists[city1+city2] = dist
+    opts[city1].append(city2)
+    opts[city2].append(city1)
 
 perm_cities = list(permutations(cities))
 min_dist = 1000
