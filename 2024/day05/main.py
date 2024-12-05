@@ -3,6 +3,7 @@ with open("input.txt") as f:
 
 def bubble_solve(edges, nums):
     change = True
+    ordered = True
     while change:
         change = False
         for i in range(len(nums)-1):
@@ -11,7 +12,8 @@ def bubble_solve(edges, nums):
                 nums[i+1] = nums[i]
                 nums[i] = temp
                 change = True
-    return nums[len(nums)//2]
+                ordered = False
+    return (nums[len(nums)//2], ordered) 
 
 edges = {}
 for line in content[:content.index("")]:
@@ -20,15 +22,12 @@ for line in content[:content.index("")]:
         edges[y].add(x)
     else:
         edges[y] = set([x])
-
-total_p1 = 0
-total_p2 = 0
+        
+totals = [0,0]
 for line in content[content.index("")+1:]:
     nums = [*map(int, line.split(","))]
-    if all([(nums[i] in edges[nums[i+1]]) for i in range(len(nums)-1)]):
-        total_p1 += nums[len(nums)//2] 
-    else:
-        total_p2 += bubble_solve(edges, nums)
+    mid, ordered = bubble_solve(edges, nums)
+    totals[not ordered] += mid
 
-print("p1:", total_p1)
-print("p2:", total_p2)
+print("p1:", totals[0])
+print("p2:", totals[1])
