@@ -9,7 +9,7 @@ def new_total(op, total, num):
         case '+':
             return total + num
         case '':
-            return int(('' if (n:=str(total)) == '0' else n) + str(num))
+            return int(str(total) + str(num))
     return total
 
 def dfs(ops, nums, total, i, target):
@@ -21,8 +21,8 @@ work_p1 = 0
 work_p2 = 0
 for test in tests:
     val,nums = test
-    work_p1 += dfs(('*', '+'), nums, 0, 0, val) * val
-    work_p2 += dfs(('*', '+', ''), nums, 0, 0, val) * val
+    work_p1 += dfs(('*', '+'), nums, nums[0], 1, val) * val
+    work_p2 += dfs(('*', '+', ''), nums, nums[0], 1, val) * val
             
 
 print("p1:", work_p1)
